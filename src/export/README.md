@@ -1,5 +1,6 @@
 # src/export/ —— 预留：conv 模型 int8 权重导出
 
-当前为空占位。待办：把 `src/models/snn_conv.py` 的 QuantLIF/ConvSNN 权重导出为
-int8 `coe`/`hex` 定标文件，并附"Python 定点模拟 vs 浮点"对拍脚本（RTL 的黄金对拍标准）。
-详见 `LOG.md` 第 6 节。
+把 `src/models/snn_conv.py` 的 QuantLIF/ConvSNN 权重导出为 int8 `coe`/`hex` 定标文件，
+并附"Python 定点模拟 vs 浮点"对拍脚本（RTL 的黄金对拍标准）。
+
+当前为空占位。

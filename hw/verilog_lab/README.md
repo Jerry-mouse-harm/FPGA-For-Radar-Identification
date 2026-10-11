@@ -1,7 +1,7 @@
 # Verilog 手撕实验室（verilog_lab）
 
 > 目标：不看资料，手撕竞赛最经典的 5 个模块 + 项目本体的脉冲编码前端，且每个都能用 testbench 仿真验证通过。
-> 配套：PLAN.md（SNN 雷达识别项目）、VERILOG_LEARNING.md（15天基础）。
+> 配套：`PLAN.md`（SNN 雷达识别项目）。
 
 ## 训练法（每个模块固定流程）
 
@@ -32,4 +32,4 @@ make m1        # 编译并跑 M1 全部 testbench
 make m1_view   # 跑完用 GTKWave 打开波形
 make clean
 ```
-（Makefile 由助手环境就绪后生成，指向 conda env 里的 iverilog）
+（Makefile 指向 conda env 里的 iverilog）

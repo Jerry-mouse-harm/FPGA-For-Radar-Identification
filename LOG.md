@@ -3,7 +3,7 @@
 > 本项目从 2026-08-31 起累积了三代代码（v1 全连接 SNN / v2 Conv-SNN 同构 / 一批一次性诊断实验）。
 > 2026-09-10 做过一次筛查与重组：v1 与诊断脚本删除，当前版本按功能分层到 `src/`。
 > **本文件是那次删除动作的唯一留档**——凡本文件未记录的内容，即视为已废弃。
-> 相关计划见 `PLAN.md`、`7DAY_PLAN.md`；学习笔记见 `DSP_FPGA_LEARNING.md`、`VERILOG_LEARNING.md`。
+> 相关技术方案见 `PLAN.md`。
 
 ---
 
@@ -288,37 +288,3 @@ spread 域 6ep 消融（400/类，200/类测试）：
    + 天然可分的 CW 类把低 SNR 数字抬起来，SNR 定义与占空比耦合；我们是**原始采样端到端**路线，
    −5dB 是实打实的弱信号。**两边的 ACC-vs-SNR 曲线没有可比性，引用时不能并排放。**
 
----
-
-## 6. 已知问题 / 待办
-
-| 优先级 | 问题 | 说明 |
-|---|---|---|
-| 高 | **硬件（Verilog）仍在早期** | 上板链路已打通（§7 M0，2026-10-11）；但 M5 UART / M6 编码器尚未开工，LIF 阵列/调度器/FSM 全未动。仍是 11/7 提交的最大风险 |
-| 高 | **三层蒸馏无单变量消融** | 只做了"整体开/关"+"权重扫描"。β=0.02、γ=0.1 很小，**无法证明膜电位/显著性各自有贡献**——而"三层蒸馏"是答辩核心卖点，证据必须补（关掉 sal、关掉 mp 各跑一次） |
-| 中 | **只有单一 seed**；500/类 → 94% 处 95% 置信区间约 **±1.5pp** | 表里 0.2~0.5pp 的差异都在噪声内；0dB 档"直训 > 蒸馏 2.2pp"很可能也是噪声。需多 seed 复核关键数字 |
-| 中 | **QAT 位宽未收紧** | int8 权重 / int16 膜电位只验证了"开 QAT 不掉点"，尚未逐项收紧到可导出 coe/hex 的程度 |
-| 中 | **conv 模型 int8 系数未导出** | `src/export/` 为空占位；还需要"Python 定点模拟 vs 浮点"的对拍脚本（RTL 的黄金对拍标准） |
-| 低 | **−5dB 绝对精度仅 44%** | 教师也只有 43%，是任务信息极限。报告里须用"教师上限 + 经典基线 35%"锚定，别硬调参 |
-| 低 | **Pulse 类召回落后** | −5dB 时 SNN 23.2% vs 教师 45.4%，是唯一明显输给教师处，值得单独挖；但该档不稳，须多 seed |
-| — | 备选路线未采用 | ReLU 教师 + 数据驱动 λ 标定（见 4.5），保留备用 |
-
----
-
-## 7. 硬件上板进度（2026-10-11 起）
-
-**工具链定型**：WSL2 开源流 —— `yosys → nextpnr-himbaechel → gowin_pack → openFPGALoader`，
-USB 走 `usbipd-win` 直通。完整 runbook 见 `hw/board_bringup.md`。仿真仍用 `hw/verilog_lab` 的 iverilog。
-
-| 日期 | 里程碑 | 详情 |
-|---|---|---|
-| 2026-10-11 | **M0 上板链路打通** | Tang Nano 20K；`0403:6010`(BL616 模拟 FT2232) 经 usbipd 进 WSL；官方 `led/blink_led` 原样搬进 `hw/board/blink/`，`make` + openFPGALoader 烧 SRAM 成功，pin15 灯 1Hz 闪烁 |
-
-**环境快照**：工具链 `~/tools/oss-cad-suite`（yosys/nextpnr-himbaechel/openFPGALoader 自带，`apycula` 由 oss-cad-suite 提供）；
-`openFPGALoader -b tangnano20k`；烧录需 `sudo -E`（PATH/`LD_LIBRARY_PATH` 随 oss-cad-suite 环境）。
-已知坑：`sudo` 会重置 PATH → 用 `sudo -E $(which openFPGALoader)`；`ftdi_sio` 需先 `sudo rmmod`。
-引脚：clk = pin 4，led = pin 15。
-
-**产物**：`hw/board/Makefile`（全流程 target：`all`/`load`/`flash`/`clean`）、`hw/board/blink/{blink_led.v,blink_led.cst}`。
-
-**下一步**：M5 UART 手撕（`hw/verilog_lab/m5_uart`，tb 已就绪）→ M6 脉冲编码前端。

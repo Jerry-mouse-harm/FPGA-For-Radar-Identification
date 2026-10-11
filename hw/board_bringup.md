@@ -157,11 +157,6 @@ clean:
 
 ---
 
-## 5. 下一步
-- 点灯通了 → 收尾 **M5 UART** 手撕（`hw/verilog_lab/m5_uart`，tb 已就绪）。
-- 再进 **M6 脉冲编码前端**（`hw/verilog_lab/m6_encoder`，tb 已就绪，金标准直接调 `src/models/snn_conv.py::encode_input`）。
-- 软件侧并行高优待办见 `LOG.md` §6：conv int8 导出（`src/export/` 空的）、三层蒸馏单变量消融。
-
 ## 环境快照（点灯后填）
 - WSL 发行版 / 内核：
 - oss-cad-suite 版本：
