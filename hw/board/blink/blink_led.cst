@@ -1,0 +1,6 @@
+// blink_led.cst —— 引脚约束 (Sipeed 官方例程)
+// Tang Nano 20K: clk = pin 4, led = pin 15
+IO_LOC "led" 15;
+IO_PORT "led" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "clk" 4;
+IO_PORT "clk" PULL_MODE=UP IO_TYPE=LVCMOS33;

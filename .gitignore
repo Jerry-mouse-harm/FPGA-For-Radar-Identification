@@ -1,0 +1,31 @@
+# ===== 构建 & 仿真产物 =====
+*.fs
+*.json
+*.vcd
+*.out
+*.asc
+*.bin
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ===== 数据 & 模型（可复现，不进仓库）=====
+results/data/
+*.pt
+*.npz
+*.npy
+
+# ===== 日志 =====
+*.log
+
+# ===== 个人学习笔记（本地思考过程）=====
+VERILOG_LEARNING.md
+DSP_FPGA_LEARNING.md
+7DAY_PLAN.md
+
+# ===== IDE / 本地 =====
+.idea/
+.vscode/
+.claude/
