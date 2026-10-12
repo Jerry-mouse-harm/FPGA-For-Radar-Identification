@@ -11,9 +11,11 @@ all: gate
 # ============ 活动检测（静息域：窗内能量 + 滞回）============
 gate:
 	$(IVL) -g2012 -o tb_activity_detector.out tb_activity_detector.v activity_detector.v && $(VVP) tb_activity_detector.out
+	$(IVL) -g2012 -o tb_gate_ctrl.out        tb_gate_ctrl.v        gate_ctrl.v        && $(VVP) tb_gate_ctrl.out
 
 view:
 	$(GTKW) tb_activity_detector.vcd &
+	$(GTKW) tb_gate_ctrl.vcd &
 
 clean:
 	rm -f *.out *.vcd
