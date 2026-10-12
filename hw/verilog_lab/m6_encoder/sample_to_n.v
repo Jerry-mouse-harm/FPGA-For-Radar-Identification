@@ -48,8 +48,17 @@ module sample_to_n (
   output reg  [4:0]        n
 );
 
-  // localparam T = 16;
+  localparam T = 16;
 
-  // TODO: 手撕
+  reg signed [9:0] tmp;
 
+  // 定点三步：+4（半 LSB 四舍五入）→ >>>3（算术右移，负数补 1）→ +8（抬到中心）
+  // 再钳位到 [0, T]：先判 <0 再判 >T，剩下的比较永远干净
+  always @(*) begin
+    tmp = (din + 4) >>> 3;   // 有符号量 + 有符号十进制常量 → 整个表达式有符号
+    tmp = tmp + T/2;
+    if (tmp < 0)         n = 5'd0;
+    else if (tmp > T)    n = 5'd16;
+    else                 n = tmp[4:0];
+  end
 endmodule

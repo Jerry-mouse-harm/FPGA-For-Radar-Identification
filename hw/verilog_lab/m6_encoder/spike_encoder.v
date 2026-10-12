@@ -50,8 +50,38 @@ module spike_encoder (
   output reg        spike
 );
 
-  // localparam T = 16;
+  localparam T = 16;
 
-  // TODO: 手撕
+  reg [4:0] acc;    // 累加器 0..15
+  reg [4:0] step;   // 0..15 正在发, 16 = 走完了
+
+  wire [4:0] thresh = T - n;   // T-n, 5 位够 (n=0 时 =16); 比较两边都 ≤16, 不会溢出
+
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      acc   <= 5'd0;
+      step  <= 5'd0;
+      spike <= 1'b0;
+    end
+    else if (load) begin            // 载入拍: 只清 acc/step/spike, 不发脉冲
+      acc   <= 5'd0;
+      step  <= 5'd0;
+      spike <= 1'b0;
+    end
+    else if (step < T) begin        // 第 step 步 (step = 0..15)
+      if (acc >= thresh) begin      // 够一个脉冲 → 发, 扣掉一份
+        spike <= 1'b1;
+        acc   <= acc - thresh;
+      end
+      else begin                    // 不够 → 不发, 攒着
+        spike <= 1'b0;
+        acc   <= acc + n;
+      end
+      step <= step + 1'b1;
+    end
+    else begin                      // 16 步走完, 保持 0 直到下次 load
+      spike <= 1'b0;
+    end
+  end
 
 endmodule
