@@ -1,0 +1,6 @@
+snr	w1	listen	period	phase	on	frames	base_det	cand_lat	ts_det	false_cand	false_act_b	false_act_ts	t_wake_b	t_result_b	t_wake_ts	t_result_ts	cand_duty_pm	res_b	res_ts
+20	8	8	16	0	2/1	20	6	14	30	0	0	0	1	30	1	30	375	260	180
+5	8	8	16	0	2/1	20	6	14	30	0	0	0	1	30	1	30	375	260	180
+0	8	8	16	0	2/1	20	22	14	30	0	0	0	1	30	1	30	375	180	180
+-5	8	8	16	0	2/1	20	22	14	30	0	0	0	1	30	1	30	250	180	100
+-8	8	8	16	0	2/1	20	-1	-1	-1	0	0	0	0	0	0	0	0	0	0

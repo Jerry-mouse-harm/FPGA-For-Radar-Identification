@@ -63,5 +63,17 @@ sim_demo:
 	    $(GATE)/activity_detector.v $(GATE)/gate_ctrl.v
 	$(VVP) gate_demo/tb_gate_demo.out
 
+# ============ 两级唤醒 A/B 测量（TOT WuRx + 定时占空比）============
+sim_two_stage:
+	$(IVL) -g2012 -o gate_demo/tb_two_stage.out \
+	    -DSNR_DB=20 -DW1=8 -DLISTEN=8 -DPERIOD=16 -DHOLD=32 -DNF_RISE_SH=7 \
+	    gate_demo/tb_two_stage.v gate_demo/eng_stub.v gate_demo/signal_rom.v \
+	    $(GATE)/activity_detector.v $(GATE)/gate_ctrl.v \
+	    $(GATE)/wakeup_wu.v $(GATE)/two_stage_detector.v
+	$(VVP) gate_demo/tb_two_stage.out
+
+sweep_two_stage:
+	bash gate_demo/sweep_two_stage.sh
+
 clean:
 	rm -f *.json *.fs
