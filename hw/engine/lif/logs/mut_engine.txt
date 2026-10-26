@@ -1,0 +1,15 @@
+E1_conv1_valid_from_done   FAIL(caught)  >>> tb_engine_top FAIL (err=54 / 73 checks)
+E2_fe_spike_rotate         FAIL(caught)  >>> tb_engine_top FAIL (err=8 / 73 checks)
+E3_conv2_valid_from_fe     FAIL(caught)  >>> tb_engine_top FAIL (err=54 / 73 checks)
+E4_conv2_ch_step_swap      FAIL(caught)  >>> tb_engine_top FAIL (err=21 / 73 checks)
+E5_conv2_spike_rotate      FAIL(caught)  >>> tb_engine_top FAIL (err=14 / 73 checks)
+E6_fc1_ch_step_swap        FAIL(caught)  >>> tb_engine_top FAIL (err=21 / 73 checks)
+E7_fc1_valid_from_c2_ch0   FAIL(caught)  >>> tb_engine_top FAIL (err=21 / 73 checks)
+E8_readout_valid_from_fs   FAIL(caught)  >>> tb_engine_top FAIL (err=54 / 73 checks)
+E9_readout_spike_invert    FAIL(caught)  >>> tb_engine_top FAIL (err=25 / 73 checks)
+E10_busy_start_zero        FAIL(caught)  >>> tb_engine_top FAIL (err=18 / 73 checks)
+E11_done_from_conv1        FAIL(caught)  >>> tb_engine_top FAIL (err=27 / 73 checks)
+E12_class_constant         FAIL(caught)  >>> tb_engine_top FAIL (err=18 / 73 checks)
+E13_done_stuck             FAIL(caught)  >>> tb_engine_top FAIL (err=31 / 73 checks)
+
+变异捕获：13/13

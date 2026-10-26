@@ -1,0 +1,13 @@
+/home/jierui/miniconda3/envs/verilog-sim/bin/iverilog -g2012 -DENG_LP=4 -DENG_NODUMP -o logs/tb_engine_top_lp4.out tb/tb_engine_top.v rtl/engine_top.v ../encode_frontend.v ../../verilog_lab/m6_encoder/sample_to_n.v rtl/conv1_array.v rtl/conv1_wrom.v rtl/conv2_array.v rtl/conv2_wrom.v rtl/fc1_array.v rtl/fc1_wrom.v rtl/readout.v rtl/readout_wrom.v \
+  && /home/jierui/miniconda3/envs/verilog-sim/bin/vvp logs/tb_engine_top_lp4.out
+frame0: class=0 logits=fe518fea02fee01fe7a001e58  cyc=112583
+frame1: class=4 logits=0185dff2fefed4cfe61afe0fe  cyc=112583
+frame2: class=4 logits=018adff370fea78fe613fe55b  cyc=112583
+frame3: class=4 logits=01ebaff1defe277fe10ffe5c2  cyc=112583
+frame4: class=4 logits=0200afef51fe217fe30dff01b  cyc=112582
+frame5: class=4 logits=ffd59ff938ff711ff4d4fe289  cyc=112583
+frame6: class=0 logits=fc178fe37dff93ffedf1027e7  cyc=112583
+frame7: class=3 logits=fe70501605fedb8fe9aefed86  cyc=112583
+frame8: class=0 logits=fdc86ff063fe956ff04201d4a  cyc=112583
+>>> tb_engine_top PASS (73 checks: 9 帧端到端 class+logits)
+tb/tb_engine_top.v:212: $finish called at 10132776 (1ns)

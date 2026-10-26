@@ -1,0 +1,15 @@
+VCD info: dumpfile logs/tb_fc1_array.vcd opened for output.
+FAIL frame2 t1: got 11111151 expect 15111111
+FAIL frame2 t2: got 11111111 expect 11511111
+FAIL frame2 t3: got 11111551 expect 11111111
+FAIL frame2 t5: got 11111111 expect 11111511
+FAIL frame2 t6: got 11111511 expect 11511111
+FAIL frame2 t9: got 11111115 expect 11111111
+FAIL frame2 t12: got 11511111 expect 11111111
+FAIL frame2 t13: got 11511155 expect 11111111
+FAIL frame2 t15: got 11111151 expect 11511111
+FAIL frame5 t0: got 11511155 expect 99999999
+FAIL frame5 t1: got 11511555 expect 99999999
+FAIL frame5 t2: got 11511555 expect 99999999
+>>> tb_fc1_array FAIL (err=82 / 3048 checks)
+tb/tb_fc1_array.v:186: $finish called at 931186 (1ns)

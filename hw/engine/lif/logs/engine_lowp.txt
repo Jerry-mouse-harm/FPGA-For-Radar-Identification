@@ -1,0 +1,56 @@
+/home/jierui/miniconda3/envs/verilog-sim/bin/iverilog -g2012 -DENGINE_LOWP -o logs/tb_engine_top_lowp.out \
+  tb/tb_engine_top.v rtl/engine_top.v ../encode_frontend.v \
+  ../../verilog_lab/m6_encoder/sample_to_n.v \
+  rtl/conv1_array.v rtl/conv1_wrom.v rtl/conv2_array.v rtl/conv2_wrom.v \
+  rtl/fc1_array.v rtl/fc1_wrom.v rtl/readout.v rtl/readout_wrom.v \
+  && /home/jierui/miniconda3/envs/verilog-sim/bin/vvp logs/tb_engine_top_lowp.out
+FAIL frame0: 240000 拍内没有 eng_done（死锁）
+FAIL frame0: done 拍 busy 应为 0（got 1）
+FAIL frame0: done 后一拍 done/busy = 0/1
+frame0: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame1: 240000 拍内没有 eng_done（死锁）
+FAIL frame1: done 拍 busy 应为 0（got 1）
+FAIL frame1 class: got 0 expect 4
+FAIL frame1: done 后一拍 done/busy = 0/1
+FAIL frame1: done 后 class 没保持（got 0）
+frame1: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame2: 240000 拍内没有 eng_done（死锁）
+FAIL frame2: done 拍 busy 应为 0（got 1）
+FAIL frame2 class: got 0 expect 4
+FAIL frame2: done 后一拍 done/busy = 0/1
+FAIL frame2: done 后 class 没保持（got 0）
+frame2: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame3: 240000 拍内没有 eng_done（死锁）
+FAIL frame3: done 拍 busy 应为 0（got 1）
+FAIL frame3 class: got 0 expect 4
+FAIL frame3: done 后一拍 done/busy = 0/1
+FAIL frame3: done 后 class 没保持（got 0）
+frame3: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame4: 240000 拍内没有 eng_done（死锁）
+FAIL frame4: done 拍 busy 应为 0（got 1）
+FAIL frame4 class: got 0 expect 4
+FAIL frame4: done 后一拍 done/busy = 0/1
+FAIL frame4: done 后 class 没保持（got 0）
+frame4: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame5: 240000 拍内没有 eng_done（死锁）
+FAIL frame5: done 拍 busy 应为 0（got 1）
+FAIL frame5 class: got 0 expect 4
+FAIL frame5: done 后一拍 done/busy = 0/1
+FAIL frame5: done 后 class 没保持（got 0）
+frame5: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame6: 240000 拍内没有 eng_done（死锁）
+FAIL frame6: done 拍 busy 应为 0（got 1）
+FAIL frame6: done 后一拍 done/busy = 0/1
+frame6: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame7: 240000 拍内没有 eng_done（死锁）
+FAIL frame7: done 拍 busy 应为 0（got 1）
+FAIL frame7 class: got 0 expect 3
+FAIL frame7: done 后一拍 done/busy = 0/1
+FAIL frame7: done 后 class 没保持（got 0）
+frame7: class=0 logits=0000000000000000000000000  cyc=240000
+FAIL frame8: 240000 拍内没有 eng_done（死锁）
+FAIL frame8: done 拍 busy 应为 0（got 1）
+FAIL frame8: done 后一拍 done/busy = 0/1
+frame8: class=0 logits=0000000000000000000000000  cyc=240000
+>>> tb_engine_top FAIL (err=48 / 73 checks)
+tb/tb_engine_top.v:205: $finish called at 21600316 (1ns)
