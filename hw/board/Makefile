@@ -31,6 +31,48 @@ load: blink_led.fs
 flash: blink_led.fs
 	openFPGALoader -b $(BOARD) -f blink_led.fs
 
+# ============ 目标 3: engine_demo (真实引擎上板, LED 显示分类) ============
+# 必须 -noalu：ALU 进位链会让 nextpnr 的 heap 布局器卡死在合法化
+ENG    := ../engine
+LIF    := $(ENG)/lif
+ESRC   := engine_demo/engine_demo.v engine_demo/engine_sample_rom.v \
+          $(ENG)/encode_frontend.v ../verilog_lab/m6_encoder/sample_to_n.v \
+          $(LIF)/rtl/engine_top.v \
+          $(LIF)/rtl/conv1_array.v $(LIF)/rtl/conv1_wrom.v \
+          $(LIF)/rtl/conv2_array.v $(LIF)/rtl/conv2_wrom.v \
+          $(LIF)/rtl/fc1_array.v   $(LIF)/rtl/fc1_wrom.v \
+          $(LIF)/rtl/readout.v     $(LIF)/rtl/readout_wrom.v
+ECST   := engine_demo/engine_demo.cst
+
+engine_demo: engine_demo.fs
+
+engine_demo/engine_sample_rom.v: engine_demo/gen_engine_sample_rom.py $(LIF)/tb/engine_smp.hex
+	python3 engine_demo/gen_engine_sample_rom.py
+
+engine_demo.json: $(ESRC)
+	yosys -p "synth_gowin -noalu -json engine_demo.json -family gw2a -top top" $(ESRC)
+
+engine_demo_pnr.json: engine_demo.json
+	nextpnr-himbaechel --device $(CHIP) \
+	    --vopt family=$(FAMILY) --vopt cst=$(ECST) \
+	    --freq 27 --report engine_demo_pnr.rpt \
+	    --json engine_demo.json --write engine_demo_pnr.json
+
+engine_demo.fs: engine_demo_pnr.json
+	gowin_pack -d $(FAMILY) -o engine_demo.fs engine_demo_pnr.json
+
+load_engine: engine_demo.fs
+	openFPGALoader -b $(BOARD) engine_demo.fs
+
+flash_engine: engine_demo.fs
+	openFPGALoader -b $(BOARD) -f engine_demo.fs
+
+# 上板前仿真验接线（12 帧，验证类别序列/LED 编码/回卷）
+sim_engine:
+	$(IVL) -g2012 -o engine_demo/tb_engine_demo.out \
+	    engine_demo/tb_engine_demo.v $(ESRC)
+	$(VVP) engine_demo/tb_engine_demo.out
+
 # ============ 目标 2: gate_demo (门控: 看 clk_eng 停跳) ============
 DSRC   := gate_demo/gate_demo.v gate_demo/eng_stub.v gate_demo/signal_rom.v \
           $(GATE)/activity_detector.v $(GATE)/gate_ctrl.v
@@ -76,4 +118,4 @@ sweep_two_stage:
 	bash gate_demo/sweep_two_stage.sh
 
 clean:
-	rm -f *.json *.fs
+	rm -f *.json *.fs *.rpt engine_demo/*.out

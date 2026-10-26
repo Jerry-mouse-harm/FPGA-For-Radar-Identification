@@ -1,0 +1,16 @@
+// engine_demo.cst —— 引脚约束（与 gate_demo 相同，照抄 Sipeed 官方示例）
+// Tang Nano 20K: clk = pin 4, leds[0..5] = pin 15..20, 全 LVCMOS33
+IO_LOC "leds[5]" 20;
+IO_PORT "leds[5]" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "leds[4]" 19;
+IO_PORT "leds[4]" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "leds[3]" 18;
+IO_PORT "leds[3]" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "leds[2]" 17;
+IO_PORT "leds[2]" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "leds[1]" 16;
+IO_PORT "leds[1]" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "leds[0]" 15;
+IO_PORT "leds[0]" PULL_MODE=UP DRIVE=8 IO_TYPE=LVCMOS33;
+IO_LOC "clk" 4;
+IO_PORT "clk" PULL_MODE=UP IO_TYPE=LVCMOS33;
