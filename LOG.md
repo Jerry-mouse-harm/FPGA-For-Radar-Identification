@@ -475,7 +475,8 @@ spread 域 6ep 消融（400/类，200/类测试）：
   （解析上界分别 9/12/13 位）→ **XW=16 对三层都够**；此前按“权重全 ±127”
   估的 FC1 XW=18 只是最坏上界。
 - 真实权重 ROM 已在临时副本上通过 `tb_conv1_array`（1491 checks）与
-  `tb_conv2_array`（4280 checks）；仓库内 RTL 仍保留占位权重。
+  `tb_conv2_array`（4280 checks）；仓库内 RTL 当时仍保留占位权重
+  （2026-10-24 已由 `tb/install_real_weights.py` 正式安装，见 §9）。
 
 ### 8.5 结论
 
@@ -483,4 +484,33 @@ spread 域 6ep 消融（400/类，200/类测试）：
    0 dB 以上单帧可用，K=4 多帧积分 −5 dB 可达 62%（A）/ 72%（B）"。
 2. 训练侧两招（低 SNR 微调、集成蒸馏）收益小但零成本，作为回退方案保留。
 3. 多帧复用已写入 `PLAN.md` §3.2/§3.3：方案 A 默认，方案 B 备选（K≤4，需定点验证）。
+
+## 9. 真实 SNN 引擎上板验证（2026-10-26）
+
+**目标**：把 `hw/engine/lif` 四级引擎（编码前端 → Conv1 → Conv2 → FC1 → readout）
+整颗放到 Tang Nano 20K，验证仿真 PASS 的设计在真实器件上跑对。
+
+### 9.1 配置与构建
+
+- 并行度 **PW1=PW2=8 / LP=4**（默认 PW=16/LP=8 资源放不下）；单帧 158792 拍 ≈5.88ms @27MHz。
+- `synth_gowin -noalu` 去掉 ALU 进位链后 nextpnr 收敛：Fmax **43.29MHz**（27MHz 约束 PASS）；
+  LUT4 约 56% / DFF 55% / BSRAM 12。
+- 时序残留：10 条 hold 违规，最差 **−0.12ns**，全部在 FC1 权重 ROM 的 BSRAM 地址脚
+  （与顶层 fit 版同源）；nextpnr 返回码 1 但仍正常写出 bitstream。
+- bitstream：`engine_demo.fs`（6.9 MiB），SRAM 配置；板载 64Mbit flash 可固化。
+
+### 9.2 上板流程与观测
+
+- `usbipd.exe attach --wsl --busid 3-2` → `openFPGALoader --detect`：
+  IDCODE `0x81b`，GW2A(R)-18(C)；`make load_engine` 两次均 100% Done。
+- demo：9 帧真实样本循环，帧间隔 2^23 拍 ≈0.31s；6 LED 低电平点亮：
+  `[2:0]=~class`（亮=1 直接读类别）、`[3]=~frame[0]`、`[4]=~busy`、`[5]=~tick[23]`。
+- **目测实测**：类别序列 `[0,4,4,4,4,4,0,3,0]` 循环正确，帧计数/心跳灯正常闪烁。
+- 结论：**四级 SNN 链路在真实硅片上跑通**；−0.12ns 边缘 hold 违规无可见影响。
+
+### 9.3 覆盖范围说明
+
+- 已验证：真实器件上的整链分类、片上 ROM/BSRAM 内容与寻址、上电复位与自动起帧、
+  LED 引脚映射/极性。
+- 未覆盖：UART 输出、门控两域联调（C7 顶层）、识别率/抗噪（仅 9 个固定样本）、功耗测量。
 
